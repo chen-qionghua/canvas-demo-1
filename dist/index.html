@@ -5,12 +5,46 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>canvas画板</title>
+    <title>mini画板</title>
     <link rel="stylesheet" href="/style.e308ff8e.css">
+    <script src="//at.alicdn.com/t/font_1261131_62oi7i3i5yg.js"></script>
 <script src="/style.e308ff8e.js"></script></head>
 
 <body>
+    <!-- 注意width和height都是html的属性，不是css的属性 -->
     <canvas id="canvas" width="10" height="10"></canvas>
+    <div class="actions">
+        <svg class="icon active" id="pen">
+            <use xlink:href="#icon-pen"></use>
+        </svg>
+        <svg class="icon" id="eraser">
+            <use xlink:href="#icon-eraser"></use>
+        </svg>
+        <svg class="icon" id="clear">
+            <use xlink:href="#icon-delete"></use>
+        </svg>
+        <svg class="icon" id="download">
+            <use xlink:href="#icon-download"></use>
+        </svg>
+    </div>
+    <div class="color-wrapper">
+        <ul>
+            <li class="black active" id="black"></li>
+            <li class="red" id="red"></li>
+            <li class="yellow" id="yellow"></li>
+            <li class="blue" id="blue"></li>
+        </ul>
+    </div>
+    <div class="whole-wrapper">
+        <div class="width-wrapper">
+            <div class="thin-wrapper" id="thin_wrapper">
+                <div class="thin active" id="thin"></div>
+            </div>
+            <div class="thick-wrapper" id="thick_wrapper">
+                <div class="thick" id="thick"></div>
+            </div>
+        </div>
+    </div>
     <script src="/main.1f19ae8e.js"></script>
 
 </body>
