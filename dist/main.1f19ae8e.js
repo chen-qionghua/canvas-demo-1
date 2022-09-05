@@ -119,55 +119,170 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   return newRequire;
 })({"main.js":[function(require,module,exports) {
 var canvas = document.getElementById("canvas");
+var thin = document.getElementById("thin");
+var thick = document.getElementById("thick");
+var black = document.getElementById("black");
+var red = document.getElementById("red");
+var yellow = document.getElementById("yellow");
+var blue = document.getElementById("blue");
+var eraser = document.getElementById("eraser");
+var pen = document.getElementById("pen");
+var clear = document.getElementById("clear");
 canvas.width = document.documentElement.clientWidth;
 canvas.height = document.documentElement.clientHeight;
 var ctx = canvas.getContext("2d");
 ctx.fillStyle = "black";
 ctx.strokeStyle = "none";
 ctx.lineWidth = 8;
-ctx.lineCap = "round";
-var painting = false; //控制画画触发时机
+ctx.lineCap = "round"; //线条转折处为圆，而不是直角锯齿状
 
-var last; // 兼容手机
+var painting = false; //控制画画触发时机，是否按下
 
-var isTouchDevice = ("ontouchstart" in document.documentElement);
+var eraserEnabled = false; //控制橡皮擦触发时机，是否擦除
 
-if (isTouchDevice) {
-  canvas.ontouchstart = function (e) {
-    var x = e.touches[0].clientX;
-    var y = e.touches[0].clientY;
-    last = [x, y];
+var lastPoint = [undefined, undefined];
+monitor();
+
+function monitor() {
+  thin.onclick = function () {
+    lineWidth = 5;
+    thin.classList.add('active');
+    thick.classList.remove('active');
   };
 
-  canvas.ontouchmove = function (e) {
-    var x = e.touches[0].clientX;
-    var y = e.touches[0].clientY;
-    drawLine(last[0], last[1], x, y);
-    last = [x, y];
-  };
-} else {
-  canvas.onmousedown = function (e) {
-    painting = true;
-    last = [e.clientX, e.clientY];
+  thick.onclick = function () {
+    lineWidth = 8;
+    thick.classList.add('active');
+    thin.classList.remove('active');
   };
 
-  canvas.onmousemove = function (e) {
-    if (painting === true) {
-      drawLine(last[0], last[1], e.clientX, e.clientY);
-      last = [e.clientX, e.clientY];
-    }
+  black.onclick = function () {
+    black.classList.add("active");
+    red.classList.remove("active");
+    yellow.classList.remove("active");
+    blue.classList.remove("active");
+    ctx.strokeStyle = "black";
   };
 
-  canvas.onmouseup = function () {
-    painting = false;
+  red.onclick = function () {
+    red.classList.add("active");
+    black.classList.remove("active");
+    yellow.classList.remove("active");
+    blue.classList.remove("active");
+    ctx.strokeStyle = "red";
   };
+
+  yellow.onclick = function () {
+    yellow.classList.add("active");
+    black.classList.remove("active");
+    red.classList.remove("active");
+    blue.classList.remove("active");
+    ctx.strokeStyle = "yellow";
+  };
+
+  blue.onclick = function () {
+    blue.classList.add("active");
+    black.classList.remove("active");
+    red.classList.remove("active");
+    yellow.classList.remove("active");
+    ctx.strokeStyle = "blue";
+  };
+
+  eraser.onclick = function () {
+    eraserEnabled = true;
+    painting = false; //需要同时将painting 置为false，否则会画笔和橡皮擦会同时开启
+
+    eraser.classList.add('active');
+    pen.classList.remove('active');
+  };
+
+  pen.onclick = function () {
+    eraserEnabled = false; // painting = true//不能开启，否则鼠标没有按下就开始画画
+
+    pen.classList.add("active");
+    eraser.classList.remove("active");
+  };
+
+  clear.onclick = function () {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  };
+
+  download.onclick = function () {
+    var a = document.createElement('a');
+    a.download = '我的涂鸦.png';
+    var url = canvas.toDataURL();
+    a.href = url;
+    a.click();
+  }; // 兼容手机
+
+
+  var isTouchDevice = ("ontouchstart" in document.documentElement); //唯一检测是否为移动端的方法
+
+  if (isTouchDevice) {
+    canvas.ontouchstart = function (e) {
+      //开始触摸
+      painting = true;
+      var x = e.touches[0].clientX;
+      var y = e.touches[0].clientY;
+      lastPoint = [x, y]; //记下第一次鼠标点击的位置，以作为画线的终点的参考点
+    };
+
+    canvas.ontouchmove = function (e) {
+      //手指移动
+      var x = e.touches[0].clientX;
+      var y = e.touches[0].clientY;
+
+      if (painting) {
+        drawLine(lastPoint[0], lastPoint[1], x, y);
+        lastPoint = [x, y]; //需要实时更新画线的 起点，记录每次点击位置
+
+        if (eraserEnabled) {
+          ctx.clearRect(x - 10, y - 10, 30, 30);
+        }
+      }
+    };
+
+    canvas.ontouchend = function () {
+      //结束触摸
+      painting = false;
+    };
+  } else {
+    //PC端
+    canvas.onmousedown = function (e) {
+      //鼠标按下
+      painting = true;
+      lastPoint = [e.clientX, e.clientY];
+    };
+
+    canvas.onmousemove = function (e) {
+      //鼠标移动
+      var x = e.clientX;
+      var y = e.clientY;
+
+      if (painting) {
+        drawLine(lastPoint[0], lastPoint[1], x, y);
+        lastPoint = [x, y];
+
+        if (eraserEnabled) {
+          ctx.clearRect(x - 10, y - 10, 30, 30);
+        }
+      }
+    };
+
+    canvas.onmouseup = function () {
+      //鼠标抬起
+      painting = false;
+    };
+  }
 }
 
 function drawLine(x1, y1, x2, y2) {
   ctx.beginPath();
-  ctx.moveTo(x1, y1);
-  ctx.lineTo(x2, y2);
-  ctx.stroke();
+  ctx.moveTo(x1, y1); //起点
+
+  ctx.lineTo(x2, y2); //终点
+
+  ctx.stroke(); //描边
 } //清除笔迹
 //更换画笔颜色
 //重置画板
@@ -199,7 +314,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61691" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61145" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -11,5 +11,77 @@ body{
     /* 解决移动端画线页面跟着滑动 */
     overflow: hidden;
 }
+.icon {
+    width: 3em; height: 2em;
+    vertical-align: -0.15em;
+    fill: currentColor;
+    overflow: hidden;
+ }
+ .actions{
+    position: fixed;
+    top: 10px;
+    left: 50px;
+    display: flex;
+    /* font-size: 16px; */
+    justify-content: flex-start;
+    transition: all 0.3s;
+ }
+ .actions>.icon.active {
+    transform: scale(1.2);
+    fill: red;
+  }
+ .color-wrapper{
+    position: fixed;
+    top: 50px;
+    left: 6px;
+
+  }
+  ul>li{
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin: 10px;
+    list-style-type: none;
+    transition: all 0.3s;
+  }
+  ul>li.active{
+    transform: scale(1.2);
+    box-shadow: 0px 0px 10px 10px rgba(221,221,221,0.95);
+  }
+  ul>li.red{
+    background-color: red;
+  }
+  ul>li.yellow{
+    background-color: yellow;
+  }
+  ul>li.blue{
+    background-color: blue;
+  }
+  ul>li.black{
+    background-color: black;
+  }
+.brushWidth-wrapper{
+    position: fixed;
+    display: flex;
+    align-items: center;
+    top: 10px;
+    left: 300px;
+    height: 44px;
+}
+.brushWidth-wrapper>.thin{
+    width: 30px;
+    height: 10px;
+    background-color: black;
+}
+.brushWidth-wrapper>.thick{
+    width: 30px;
+    height: 20px;
+    background-color: black;
+    margin-left: 20px;
+}
+.brushWidth-wrapper>.active{
+    box-shadow: 0px 0px 10px 10px rgba(221,221,221,0.85);
+}
+
 
 /*# sourceMappingURL=/style.e308ff8e.css.map */

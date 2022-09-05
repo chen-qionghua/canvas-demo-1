@@ -6,8 +6,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>mini画板</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="//at.alicdn.com/t/font_1261131_62oi7i3i5yg.js"></script>
+    <link rel="stylesheet" href="./style.css">
+    <script src="//at.alicdn.com/t/c/font_3630858_x3w01392dz.js"></script>
 </head>
 
 <body>
@@ -15,16 +15,16 @@
     <canvas id="canvas" width="10" height="10"></canvas>
     <div class="actions">
         <svg class="icon active" id="pen">
-            <use xlink:href="#icon-pen"></use>
+            <use xlink:href="#icon-huabi"></use>
         </svg>
         <svg class="icon" id="eraser">
-            <use xlink:href="#icon-eraser"></use>
+            <use xlink:href="#icon-qingchu2"></use>
         </svg>
         <svg class="icon" id="clear">
-            <use xlink:href="#icon-delete"></use>
+            <use xlink:href="#icon-zhongzhi"></use>
         </svg>
         <svg class="icon" id="download">
-            <use xlink:href="#icon-download"></use>
+            <use xlink:href="#icon-xiazai1"></use>
         </svg>
     </div>
     <div class="color-wrapper">
@@ -35,15 +35,9 @@
             <li class="blue" id="blue"></li>
         </ul>
     </div>
-    <div class="whole-wrapper">
-        <div class="width-wrapper">
-            <div class="thin-wrapper" id="thin_wrapper">
-                <div class="thin active" id="thin"></div>
-            </div>
-            <div class="thick-wrapper" id="thick_wrapper">
-                <div class="thick" id="thick"></div>
-            </div>
-        </div>
+    <div class="brushWidth-wrapper">
+        <div class="thin active" id="thin"></div>
+        <div class="thick" id="thick"></div>
     </div>
     <script src="./main.js"></script>
 
