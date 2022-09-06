@@ -24,12 +24,18 @@ body{
     display: flex;
     /* font-size: 16px; */
     justify-content: flex-start;
-    transition: all 0.3s;
+    /* transition: all 0.3s; */
  }
- .actions>.icon.active {
-    transform: scale(1.2);
-    fill: red;
+ .actions>svg{
+    transition: all 0.2s;
   }
+ .actions>.icon.active {
+    transform: scale(1.5);
+    /* 为什么fill不生效 */
+    fill:red;
+    /* box-shadow: 0px 0px 10px 10px rgba(243, 112, 112, 0.95); */
+  }
+
  .color-wrapper{
     position: fixed;
     top: 50px;
@@ -67,6 +73,7 @@ body{
     top: 10px;
     left: 300px;
     height: 44px;
+    transition: all 0.2s;
 }
 .brushWidth-wrapper>.thin{
     width: 30px;
@@ -81,4 +88,6 @@ body{
 }
 .brushWidth-wrapper>.active{
     box-shadow: 0px 0px 10px 10px rgba(221,221,221,0.85);
+    transform: scale(1.2);
+
 }

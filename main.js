@@ -16,7 +16,7 @@ let ctx = canvas.getContext("2d");
 
 ctx.fillStyle = "black";
 ctx.strokeStyle = "none";
-ctx.lineWidth = 8;
+ctx.lineWidth = 5;
 ctx.lineCap = "round";//线条转折处为圆，而不是直角锯齿状
 
 let painting = false; //控制画画触发时机，是否按下
@@ -26,12 +26,12 @@ let lastPoint = [undefined,undefined];
 monitor()
 function monitor(){
   thin.onclick = ()=>{
-    lineWidth = 5
+    ctx.lineWidth = 5
     thin.classList.add('active')
     thick.classList.remove('active')
   }
   thick.onclick = ()=>{
-    lineWidth = 8
+    ctx.lineWidth = 10
     thick.classList.add('active')
     thin.classList.remove('active')
   }
@@ -98,10 +98,11 @@ if (isTouchDevice) {
     let x = e.touches[0].clientX;
     let y = e.touches[0].clientY;
     if(painting){
-      drawLine(lastPoint[0], lastPoint[1], x, y);
-      lastPoint = [x, y];//需要实时更新画线的 起点，记录每次点击位置
       if(eraserEnabled){   
         ctx.clearRect(x-10,y-10,30,30)
+      }else{
+        drawLine(lastPoint[0], lastPoint[1], x, y);
+        lastPoint = [x, y];//需要实时更新画线的 起点，记录每次点击位置
       }
     }
 
@@ -121,10 +122,11 @@ if (isTouchDevice) {
     let x = e.clientX
     let y = e.clientY
     if(painting){
-      drawLine(lastPoint[0], lastPoint[1],x,y );
-      lastPoint = [x, y];
       if(eraserEnabled){
         ctx.clearRect(x-10,y-10,30,30)
+      }else{
+        drawLine(lastPoint[0], lastPoint[1],x,y );
+        lastPoint = [x, y];
       }
     }
 
@@ -135,10 +137,7 @@ if (isTouchDevice) {
 }
 
 }
-
-
-
-
+//连线
 function drawLine(x1, y1, x2, y2) {
   ctx.beginPath();
   ctx.moveTo(x1, y1);//起点

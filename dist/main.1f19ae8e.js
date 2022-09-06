@@ -133,7 +133,7 @@ canvas.height = document.documentElement.clientHeight;
 var ctx = canvas.getContext("2d");
 ctx.fillStyle = "black";
 ctx.strokeStyle = "none";
-ctx.lineWidth = 8;
+ctx.lineWidth = 5;
 ctx.lineCap = "round"; //线条转折处为圆，而不是直角锯齿状
 
 var painting = false; //控制画画触发时机，是否按下
@@ -145,13 +145,13 @@ monitor();
 
 function monitor() {
   thin.onclick = function () {
-    lineWidth = 5;
+    ctx.lineWidth = 5;
     thin.classList.add('active');
     thick.classList.remove('active');
   };
 
   thick.onclick = function () {
-    lineWidth = 8;
+    ctx.lineWidth = 10;
     thick.classList.add('active');
     thin.classList.remove('active');
   };
@@ -233,11 +233,11 @@ function monitor() {
       var y = e.touches[0].clientY;
 
       if (painting) {
-        drawLine(lastPoint[0], lastPoint[1], x, y);
-        lastPoint = [x, y]; //需要实时更新画线的 起点，记录每次点击位置
-
         if (eraserEnabled) {
           ctx.clearRect(x - 10, y - 10, 30, 30);
+        } else {
+          drawLine(lastPoint[0], lastPoint[1], x, y);
+          lastPoint = [x, y]; //需要实时更新画线的 起点，记录每次点击位置
         }
       }
     };
@@ -260,11 +260,11 @@ function monitor() {
       var y = e.clientY;
 
       if (painting) {
-        drawLine(lastPoint[0], lastPoint[1], x, y);
-        lastPoint = [x, y];
-
         if (eraserEnabled) {
           ctx.clearRect(x - 10, y - 10, 30, 30);
+        } else {
+          drawLine(lastPoint[0], lastPoint[1], x, y);
+          lastPoint = [x, y];
         }
       }
     };
@@ -274,7 +274,8 @@ function monitor() {
       painting = false;
     };
   }
-}
+} //连线
+
 
 function drawLine(x1, y1, x2, y2) {
   ctx.beginPath();
